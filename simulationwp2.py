@@ -648,53 +648,65 @@ def Viocount():
             positionVx = vehicle_rect.x
             positionVh = vehicle_rect.height
             positionVy = vehicle_rect.y
+            #
+            # col = pygame.sprite.collide_rect(pedestrian, vehicle)
+            col = pedestrian_rect.colliderect(vehicle_rect)
+            print(col)
+            if col == True:
+                violations += 1
 
-        def collision():
-            global violations
-            if positionPx <= positionVx <= positionPx + positionPw:
-                if positionPy <= positionVy <= positionPy + positionPh:
-                    violations += 1
-                    print(positionPy, positionPx, positionPh)
-                    print(violations, '1')
-                    return True
-            if positionPx <= positionVx + positionVw <= positionVx + positionPw:
-                if positionPy <= positionVy <= positionPy + positionPh:
-                    violations += 1
-                    print(violations, '2')
-                    return True
-            if positionPx <= positionVx <= positionPx + positionPw:
-                if positionPy <= positionVy + positionVh <= positionPy + positionPh:
-                    violations += 1
-                    print(violations, '3')
-                    return True
-            if positionPx <= positionVx + positionVw <= positionPx + positionPw:
-                if positionPy <= positionVy + positionVh <= positionPy + positionPh:
-                    violations += 1
-                    print(violations, '4')
-                    return True
-            if positionVx <= positionPx <= positionVx + positionVw:
-                if positionVy <= positionPy <= positionVy + positionVh:
-                    violations += 1
-                    print(violations, '5')
-                    return True
-            if positionVx <= positionPx + positionPw <= positionVx + positionVw:
-                if positionVy <= positionPy <= positionVy + positionVh:
-                    violations += 1
-                    print(violations, '6')
-                    return True
-            if positionVx <= positionPx <= positionVx + positionVw:
-                if positionVy <= positionPy + positionPh <= positionVy + positionVh:
-                    violations += 1
-                    print(violations, '7')
-                    return True
-            if positionVx <= positionPx + positionPw <= positionVx + positionVw:
-                if positionVy <= positionPy + positionPh <= positionVy + positionVh:
-                    violations += 1
-                    print(violations, '8')
-                    return True
 
-        collision()
+        #
+        # def collision():
+        #     global violations
+        #     if positionPx <= positionVx <= positionPx + positionPw:
+        #         if positionPy <= positionVy <= positionPy + positionPh:
+        #             violations += 1
+        #             print(positionPy, positionPx, positionPh)
+        #             print(violations, '1')
+        #             return True
+        #     if positionPx <= positionVx + positionVw <= positionVx + positionPw:
+        #         if positionPy <= positionVy <= positionPy + positionPh:
+        #             violations += 1
+        #             print(violations, '2')
+        #             return True
+        #     if positionPx <= positionVx <= positionPx + positionPw:
+        #         if positionPy <= positionVy + positionVh <= positionPy + positionPh:
+        #             violations += 1
+        #             print(violations, '3')
+        #             return True
+        #     if positionPx <= positionVx + positionVw <= positionPx + positionPw:
+        #         if positionPy <= positionVy + positionVh <= positionPy + positionPh:
+        #             violations += 1
+        #             print(violations, '4')
+        #             return True
+        #     if positionVx <= positionPx <= positionVx + positionVw:
+        #         if positionVy <= positionPy <= positionVy + positionVh:
+        #             violations += 1
+        #             print(violations, '5')
+        #             return True
+        #     if positionVx <= positionPx + positionPw <= positionVx + positionVw:
+        #         if positionVy <= positionPy <= positionVy + positionVh:
+        #             violations += 1
+        #             print(violations, '6')
+        #             return True
+        #     if positionVx <= positionPx <= positionVx + positionVw:
+        #         if positionVy <= positionPy + positionPh <= positionVy + positionVh:
+        #             violations += 1
+        #             print(violations, '7')
+        #             return True
+        #     if positionVx <= positionPx + positionPw <= positionVx + positionVw:
+        #         if positionVy <= positionPy + positionPh <= positionVy + positionVh:
+        #             violations += 1
+        #             print(violations, '8')
+        #             return True
 
+        # collision()
+
+def checkCollision(self, sprite1, sprite2):
+    col = pygame.sprite.collide_rect(sprite1, sprite2)
+    if col == True:
+        sys.exit()
 
 def simTime():
     global timeElapsed, simulationTime
