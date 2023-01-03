@@ -168,6 +168,7 @@ class Vehicle(pygame.sprite.Sprite):
         if self.direction == 'right':
             if self.crossed == 0 and self.x + self.image.get_rect().width > stopLines[self.direction]:
                 self.crossed = 1
+
                 vehicles[self.direction]['crossed'] += 1
                 if self.willTurn == 0:
                     vehiclesNotTurned[self.direction][self.lane].append(self)
@@ -175,6 +176,7 @@ class Vehicle(pygame.sprite.Sprite):
             if self.willTurn == 1:
                 if self.lane == 2:
                     if self.crossed == 0 or self.x + self.image.get_rect().width < mid[self.direction]['x'] + 10:
+
                         if ((self.x + self.image.get_rect().width <= self.stop or (
                                 currentGreen == 0 and currentYellow == 0) or self.crossed == 1) and (
                                 self.index == 0 or self.x + self.image.get_rect().width < (
@@ -241,6 +243,7 @@ class Vehicle(pygame.sprite.Sprite):
             if self.willTurn == 1:
                 if self.lane == 1:
                     if self.crossed == 0 or self.y + self.image.get_rect().height < mid[self.direction]['y'] + 50:
+
                         if ((self.y + self.image.get_rect().height <= self.stop or (
                                 currentGreen == 1 and currentYellow == 0) or self.crossed == 1) and (
                                 self.index == 0 or self.y + self.image.get_rect().height < (
@@ -263,6 +266,7 @@ class Vehicle(pygame.sprite.Sprite):
                                 self.x += self.speed
                 elif self.lane == 2:
                     if self.crossed == 0 or self.y + self.image.get_rect().height < stopLines[self.direction] + 150:
+
                         if ((self.y + self.image.get_rect().height <= self.stop or (
                                 currentGreen == 1 and currentYellow == 0) or self.crossed == 1) and (
                                 self.index == 0 or self.y + self.image.get_rect().height < (
@@ -298,6 +302,7 @@ class Vehicle(pygame.sprite.Sprite):
                         self.y += self.speed
         elif self.direction == 'left':
             if self.crossed == 0 and self.x < stopLines[self.direction]:
+
                 self.crossed = 1
                 vehicles[self.direction]['crossed'] += 1
                 if self.willTurn == 0:
@@ -306,6 +311,7 @@ class Vehicle(pygame.sprite.Sprite):
             if self.willTurn == 1:
                 if self.lane == 2:
                     if self.crossed == 0 or self.x > mid[self.direction]['x'] - 40:
+
                         if ((self.x >= self.stop or (
                                 currentGreen == 2 and currentYellow == 0) or self.crossed == 1) and (
                                 self.index == 0 or self.x > (vehicles[self.direction][self.lane][self.index - 1].x +
@@ -376,6 +382,7 @@ class Vehicle(pygame.sprite.Sprite):
                 if self.lane == 2:
                     # if self.crossed == 0 or self.y > stopLines[self.direction] - 60:
                     if self.crossed == 0 or self.y > mid[self.direction]['y'] - 20:
+
                         if ((self.y >= self.stop or (
                                 currentGreen == 3 and currentYellow == 0) or self.crossed == 1) and (
                                 self.index == 0 or self.y > (vehicles[self.direction][self.lane][self.index - 1].y +
@@ -465,16 +472,20 @@ class Pedestrian(pygame.sprite.Sprite):
             if direction == 'p_right':
                 self.stop = pedestrians[direction][lane][self.index - 1].stop - pedestrians[direction][lane][
                     self.index - 1].image.get_rect().width - stoppingGapP  # setting stop coordinate as: stop coordinate
+
                 # of next pedestrian - width of next pedestrian - gap
             elif direction == 'p_left':
                 self.stop = pedestrians[direction][lane][self.index - 1].stop + pedestrians[direction][lane][
                     self.index - 1].image.get_rect().width + stoppingGapP
+
             elif direction == 'p_down':
                 self.stop = pedestrians[direction][lane][self.index - 1].stop - pedestrians[direction][lane][
                     self.index - 1].image.get_rect().height - stoppingGapP
+
             elif direction == 'p_up':
                 self.stop = pedestrians[direction][lane][self.index - 1].stop + pedestrians[direction][lane][
                     self.index - 1].image.get_rect().height + stoppingGapP
+
         else:
             self.stop = defaultStop2[direction]
 
@@ -501,6 +512,7 @@ class Pedestrian(pygame.sprite.Sprite):
             if self.crossed == 0 and self.x + self.image.get_rect().width > stopLinesP[self.direction]:  # if the image
                 # has crossed stop line now
                 self.crossed = 1
+
             if ((self.x + self.image.get_rect().width <= self.stop or self.crossed == 1 or (currentPGreen == 0)) and (
                     self.index == 0 or self.x + self.image.get_rect().width < (
                     pedestrians[self.direction][self.lane][self.index - 1].x - movingGapP))):
@@ -531,6 +543,7 @@ class Pedestrian(pygame.sprite.Sprite):
                                                       self.index - 1].image.get_rect().height + movingGapP))):
                 self.y -= self.speed
         return self.y, self.x
+
 
 def move():
     p = Pedestrian
@@ -785,10 +798,6 @@ class Main:
     thread3.daemon = True
     thread3.start()
 
-    # thread5 = threading.Thread(name="VioCount", target=Viocount, args=())
-    # thread5.daemon = True
-    # thread5.start()
-
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -821,6 +830,16 @@ class Main:
                     # signals[i].signalText = signals[i].greenp
                     screen.blit(greenSignal, signalCoods[i])
                     # screen.blit(predSignal, psignalCoods[i])
+                    for pedestrian in simulation:
+                        for vehicle in simulation:
+                            vehicle1y = vehicle.y + vehicle.image.get_rect().height
+                            pedestrian1x = pedestrian.x + pedestrian.image.get_rect().width
+                            vehicle1x = vehicle.x + vehicle.image.get_rect().width
+                            pedestrian1y = pedestrian.y + pedestrian.image.get_rect().height
+                            if (vehicle1y > 230) and (pedestrian1x > 519) and vehicle1x > 450 and pedestrian1y > 800:
+                                if vehicle1y % pedestrian1x == 0 or vehicle1x % pedestrian1y == 0:
+                                    violations += 1
+
 
 
             else:
@@ -835,33 +854,6 @@ class Main:
                 # screen.blit(pgreenSignal, psignalCoods[i])
 
         signalTexts = ["", "", "", ""]
-
-        for pedestrian in simulation:
-
-            for vehicle in simulation:
-                # # Coordinates of signal image, timer, and vehicle count ( up, right, left, down)(x,y)
-                # signalCoods = [(455, 500), (515, 140), (865, 200), (800, 530)]
-
-                if pedestrian.x > 300 and pedestrian.y < 300 and vehicle.y == 517 and vehicle.x == 147.4000000000007:
-                    violations += 1
-
-                if pedestrian.x == 1008.0 and pedestrian.y == 399 and vehicle.y == 258 and vehicle.x == 360.0000000000013:
-                    violations += 1
-
-
-                if pedestrian.x  == vehicle.y -750 :
-                    print(pedestrian.x)
-                    print(pedestrian.y)
-                    print(vehicle.y)
-                    print(vehicle.x)
-                    violations += 1
-
-
-
-                # if pedestrian_rect == vehicle_rect:
-                #     print(pedestrian_rect.x, pedestrian_rect.y)
-                #     print(vehicle_rect.x, vehicle_rect.y)
-                #     violations += 1
 
         # display violations
         ViolationsText = font.render(("Number of violations: " + str(violations)), True, black, white)
