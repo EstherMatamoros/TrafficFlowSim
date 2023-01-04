@@ -9,6 +9,7 @@ defaultGreen = {0: 10, 1: 10, 2: 10, 3: 10}
 defaultRed = 150
 defaultYellow = 5
 
+# For Pedestrians lights
 defaultPGreen = {0: 10, 1: 10, 2: 10, 3: 10}
 defaultPRed = 150
 
@@ -20,6 +21,7 @@ currentYellow = 0  # Indicates whether yellow signal is on or off
 
 # For violations
 violations = 0
+violation_alert = ''
 violationsCoods = (900, 50)
 
 psignals = []
@@ -33,21 +35,20 @@ speeds = {'car': 2.25, 'bus': 1.8, 'truck': 1.8, 'bike': 2.6, 'person1': 0.2, 'p
 
 # Coordinates of vehicles' start and pedestrians' start
 
-x = {'right': [0, 0, 0], 'down': [615, 635, 576], 'left': [1400, 1400, 1400], 'up': [790, 750, 709],
-     'p_right': [0, 0, 0], 'p_down': [890, 830, 809], 'p_left': [1400, 1400, 1400], 'p_up': [485, 500, 526]}
-y = {'right': [446, 517, 476], 'down': [0, 0, 0], 'left': [323, 358, 399], 'up': [800, 800, 800],
-     'p_right': [223, 258, 269], 'p_down': [0, 0, 0], 'p_left': [546, 567, 586], 'p_up': [800, 800, 800]}
+x = {'right': [1, 0, 1], 'down': [615, 635, 576], 'left': [1400, 1400, 1400], 'up': [790, 750, 709],
+     'p_right': [1, 2, 0], 'p_down': [890, 830, 809], 'p_left': [1400, 1400, 1400], 'p_up': [485, 500, 526]}
+y = {'right': [446, 517, 476], 'down': [1, 0, 1], 'left': [323, 358, 399], 'up': [801, 803, 802],
+     'p_right': [223, 258, 269], 'p_down': [0, 1, 0], 'p_left': [546, 567, 586], 'p_up': [800, 800, 800]}
 
 vehicles = {'right': {0: [], 1: [], 2: [], 'crossed': 0}, 'down': {0: [], 1: [], 2: [], 'crossed': 0},
             'left': {0: [], 1: [], 2: [], 'crossed': 0}, 'up': {0: [], 1: [], 2: [], 'crossed': 0}}
 vehicleTypes = {0: 'car', 1: 'bus', 2: 'truck', 3: 'bike'}
 
-pedestrians = {'p_right': {0: [], 1: [], 2: [], 'p_crossed': 0}, 'p_down': {0: [], 1: [], 2: [], 'p_crossed': 0},
-               'p_left': {0: [], 1: [], 2: [], 'p_crossed': 0}, 'p_up': {0: [], 1: [], 2: [], 'p_crossed': 0}}
+pedestrians = {'p_right': {0: [], 1: [], 2: [], 'crossed': 0}, 'p_down': {0: [], 1: [], 2: [], 'crossed': 0},
+               'p_left': {0: [], 1: [], 2: [], 'crossed': 0}, 'p_up': {0: [], 1: [], 2: [], 'crossed': 0}}
 pedestrianTypes = {0: 'person1', 1: 'person2', 2: 'person3', 3: 'person4'}
 
-directionNumbers = {0: 'right', 1: 'down', 2: 'left', 3: 'up', 4: 'rightdown', 5: 'leftdown', 6: 'downright',
-                    7: 'upleft'}
+directionNumbers = {0: 'right', 1: 'down', 2: 'left', 3: 'up'}
 
 pdirectionNumbers = {0: 'p_right', 1: 'p_down', 2: 'p_left', 3: 'p_up'}
 
@@ -63,7 +64,7 @@ psignalTimerCoods = [(470, 690), (470, 170), (860, 180), (870, 690)]  # up,right
 stopLines = {'right': 450, 'down': 230, 'left': 900, 'up': 635}
 defaultStop = {'right': 440, 'down': 220, 'left': 910, 'up': 650}
 
-# Coordinates of stop lines fir pedestrians
+# Coordinates of stop lines for pedestrians
 stopLinesP = {'p_right': 560, 'p_down': 340, 'p_left': 810, 'p_up': 575}
 defaultStop2 = {'p_right': 550, 'p_down': 330, 'p_left': 820, 'p_up': 590}
 
@@ -519,7 +520,7 @@ class Pedestrian(pygame.sprite.Sprite):
                 # (if the image has not reached its stop coordinate or has crossed stop line or has green signal) and
                 # (it is either the first pedestrian in that lane or it is has enough gap to the next pedestrian in
                 # that lane)
-                self.x += self.speed  # move the pedestrian      
+                self.x += self.speed  # move the pedestrian
         elif self.direction == 'p_down':
             if self.crossed == 0 and self.y + self.image.get_rect().height > stopLinesP[self.direction]:
                 self.crossed = 1
@@ -543,7 +544,6 @@ class Pedestrian(pygame.sprite.Sprite):
                                                       self.index - 1].image.get_rect().height + movingGapP))):
                 self.y -= self.speed
         return self.y, self.x
-
 
 def move():
     p = Pedestrian
@@ -737,24 +737,6 @@ def generatepedestrians():
         time.sleep(1)
 
 
-# def Viocount():
-#     global violations
-#     for pedestrian in simulation:
-#         for vehicle in simulation:
-#             pedestrian_rect = pedestrian.image.get_rect()
-#             vehicle_rect = vehicle.image.get_rect()
-#             if pedestrian_rect.x == vehicle_rect.x and pedestrian_rect.y == vehicle_rect.y:
-#                 print(pedestrian_rect.x, pedestrian_rect.y)
-#                 print(vehicle_rect.x, vehicle_rect.y)
-#                 violations += 1
-#             # col = pygame.sprite.collide_rect(pedestrian, vehicle)
-#             col = pedestrian_rect.colliderect(vehicle_rect)
-#             print(col)
-#             if col:
-#                 violations += 1
-#     return violations
-
-
 class Main:
     global allowedVehicleTypesList
     i = 0
@@ -823,40 +805,53 @@ class Main:
                 if currentYellow == 1:
                     signals[i].signalText = signals[i].yellow
                     screen.blit(yellowSignal, signalCoods[i])
-                    # screen.blit(predSignal, psignalCoods[i])
 
                 else:
                     signals[i].signalText = signals[i].green
-                    # signals[i].signalText = signals[i].greenp
                     screen.blit(greenSignal, signalCoods[i])
-                    # screen.blit(predSignal, psignalCoods[i])
-                    for pedestrian in simulation:
-                        for vehicle in simulation:
-                            vehicle1y = vehicle.y + vehicle.image.get_rect().height
-                            pedestrian1x = pedestrian.x + pedestrian.image.get_rect().width
-                            vehicle1x = vehicle.x + vehicle.image.get_rect().width
-                            pedestrian1y = pedestrian.y + pedestrian.image.get_rect().height
-                            if (vehicle1y > 230) and (pedestrian1x > 519) and vehicle1x > 450 and pedestrian1y > 800:
-                                if vehicle1y % pedestrian1x == 0 or vehicle1x % pedestrian1y == 0:
-                                    violations += 1
-
 
 
             else:
                 if signals[i].red <= 10:
                     signals[i].signalText = signals[i].red
-                    # signals[i].signalText = signals[i].redp
-                    # screen.blit(pgreenSignal, psignalCoods[i])
+
 
                 else:
                     signals[i].signalText = "---"
                 screen.blit(redSignal, signalCoods[i])
-                # screen.blit(pgreenSignal, psignalCoods[i])
 
         signalTexts = ["", "", "", ""]
 
+        for vehicle in simulation:
+            if vehicle.direction == 'right' and vehicle.x > 300:
+                for pedestrian in simulation:
+                    if pedestrian.direction == 'p_up' and  1000 < pedestrian.y < 1000.2:
+                        violations += 1
+                        violation_alert = 'Hit & Run'
+
+            if vehicle.direction == 'left' and 950 > vehicle.x > 940 and vehicle.y > 358:
+                for pedestrian in simulation:
+                    if pedestrian.direction == 'p_down' and 380 < pedestrian.y < 390:
+                        violations += 1
+                        violation_alert = 'Hit & Run'
+
+        for vehicle in simulation:
+            if vehicle.direction == 'up':
+                for pedestrian in simulation:
+                    if pedestrian.direction == 'p_right' and 900 < pedestrian.x < 900:
+                        violations += 1
+                        violation_alert = 'Hit & Run'
+            elif vehicle.direction == 'down' and vehicle.y > 230:
+                for pedestrian in simulation:
+                    if pedestrian.direction == 'p_left' and 235 > pedestrian.y > 230:
+                        crosswalk = pygame.draw.rect(screen, 'red', pygame.Rect(550, 250, 250, 80))
+                        violations += 1
+                        violation_alert = 'Hit & Run'
+
+
+
         # display violations
-        ViolationsText = font.render(("Number of violations: " + str(violations)), True, black, white)
+        ViolationsText = font.render((violation_alert +"\n" + "Number of violations: " + str(violations)), True, black, white)
         screen.blit(ViolationsText, violationsCoods)
 
         # display signal timer
@@ -878,6 +873,7 @@ class Main:
         for pedestrian in simulation:
             screen.blit(pedestrian.image, [pedestrian.x, pedestrian.y])
             pedestrian.move()
+
         pygame.display.update()
 
 
