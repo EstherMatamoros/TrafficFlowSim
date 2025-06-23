@@ -1,0 +1,7 @@
+*/__pycache__/
+*.py[cod]
+.venv/
+*.pyc
+# Ignore Python bytecode files
+# Ignore virtual environment directories
+*.egg-info/
