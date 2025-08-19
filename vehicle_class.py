@@ -34,10 +34,10 @@ class Vehicle(pygame.sprite.Sprite):
         """Initialize vehicle position based on direction and lane"""
         # Simplified position initialization
         direction_positions = {
-            Direction.RIGHT: {'x': [1, 0, 1], 'y': [446, 517, 476]},
-            Direction.DOWN: {'x': [615, 635, 576], 'y': [1, 0, 1]},
-            Direction.LEFT: {'x': [1400, 1400, 1400], 'y': [323, 358, 399]},
-            Direction.UP: {'x': [790, 750, 709], 'y': [801, 803, 802]}
+            Direction.RIGHT: {'x': [0, 1, 2], 'y': [546, 590, 576]},
+            Direction.DOWN: {'x': [815, 835, 876], 'y': [0, 1, 2]},
+            Direction.LEFT: {'x': [1400, 1400, 1400], 'y': [410, 470, 440]},
+            Direction.UP: {'x': [1000, 970, 940], 'y': [801, 803, 802]}
         }
         
         pos = direction_positions[self.direction]

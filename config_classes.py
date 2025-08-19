@@ -14,7 +14,7 @@ class VehicleType(Enum):
     """Vehicle type enumeration"""
     CAR = 'car'
     BUS = 'bus'
-    TRUCK = 'truck'
+    TRUCK = 'truck' 
     BIKE = 'bike'
 
 
